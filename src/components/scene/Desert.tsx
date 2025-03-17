@@ -1,7 +1,6 @@
 
 import { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { TextureLoader } from "three";
 
@@ -21,43 +20,43 @@ export default function Desert() {
 
   return (
     <group>
-      {/* Use the desert image as a skybox */}
-      <mesh position={[0, 0, -50]} rotation={[0, 0, 0]}>
-        <planeGeometry args={[200, 80]} />
+      {/* Use the desert image as a skybox, adjusted to be more prominent */}
+      <mesh position={[0, 5, -40]} rotation={[0, 0, 0]}>
+        <planeGeometry args={[200, 100]} />
         <meshBasicMaterial 
           map={desertTexture}
           side={THREE.DoubleSide}
         />
       </mesh>
 
-      {/* Sun */}
-      <mesh ref={sunRef} position={[15, 15, -30]}>
-        <sphereGeometry args={[8, 32, 32]} />
+      {/* Sun - larger and positioned to match the reference */}
+      <mesh ref={sunRef} position={[0, 25, -50]}>
+        <sphereGeometry args={[12, 32, 32]} />
         <meshBasicMaterial color="#ff7b00" />
       </mesh>
 
-      {/* Ambient Light */}
-      <ambientLight intensity={0.6} />
+      {/* Ambient Light - warmer to match sunset */}
+      <ambientLight intensity={0.8} color="#ffdbba" />
       
-      {/* Directional Light (Sunset) */}
+      {/* Directional Light (Sunset) - positioned to match sun position */}
       <directionalLight 
-        position={[15, 15, -30]}
-        intensity={1.5}
+        position={[0, 25, -50]}
+        intensity={1.8}
         color="#ff7b00"
       />
 
-      {/* Desert Ground */}
+      {/* Desert Ground - flatter and more orange to match reference */}
       <mesh 
         ref={groundRef}
         rotation={[-Math.PI / 2, 0, 0]} 
         position={[0, -2, 0]}
       >
-        <planeGeometry args={[100, 100, 50, 50]} />
+        <planeGeometry args={[200, 200, 50, 50]} />
         <meshStandardMaterial 
-          color="#dea673" 
+          color="#e9a268" 
           wireframe={false}
           metalness={0.1}
-          roughness={0.8}
+          roughness={0.9}
           onBeforeCompile={(shader) => {
             shader.uniforms.time = { value: 0 };
             shader.vertexShader = `
@@ -67,7 +66,7 @@ export default function Desert() {
               '#include <begin_vertex>',
               `
               #include <begin_vertex>
-              float elevation = sin(position.x * 0.05) * sin(position.z * 0.05) * 2.0;
+              float elevation = sin(position.x * 0.02) * sin(position.z * 0.02) * 1.0;
               transformed.y += elevation;
               `
             );
@@ -75,19 +74,29 @@ export default function Desert() {
         />
       </mesh>
 
-      {/* Add some cacti like in the reference image */}
-      {[15, -20, 35, -5].map((x, i) => (
-        <mesh key={i} position={[x, -1.5, i * 10 - 10]}>
-          <cylinderGeometry args={[0.5, 0.7, 5, 8]} />
-          <meshStandardMaterial color="#2d7d46" />
-          {/* Cactus arms */}
-          <group position={[0, 1, 0]}>
-            <mesh position={[1, 0, 0]} rotation={[0, 0, Math.PI / 3]}>
-              <cylinderGeometry args={[0.3, 0.4, 2, 8]} />
-              <meshStandardMaterial color="#2d7d46" />
-            </mesh>
-          </group>
+      {/* Add some rock formations and dunes in the distance */}
+      <group position={[-30, -1, -20]}>
+        <mesh>
+          <coneGeometry args={[8, 10, 4]} />
+          <meshStandardMaterial color="#d28c51" />
         </mesh>
+      </group>
+
+      <group position={[25, -1, -15]}>
+        <mesh>
+          <coneGeometry args={[10, 8, 4]} />
+          <meshStandardMaterial color="#c17f45" />
+        </mesh>
+      </group>
+
+      {/* Add distant mountains/dunes to match reference image */}
+      {[-50, -25, 0, 25, 50].map((x, i) => (
+        <group key={i} position={[x, -1, -30 - (i * 3)]}>
+          <mesh>
+            <coneGeometry args={[15 + (i % 3 * 5), 10 + (i % 2 * 8), 3]} />
+            <meshStandardMaterial color={`hsl(30, 70%, ${40 - i * 3}%)`} />
+          </mesh>
+        </group>
       ))}
     </group>
   );

@@ -10,7 +10,7 @@ export default function Scene() {
   return (
     <div className="fixed inset-0">
       <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 2, 12]} />
+        <PerspectiveCamera makeDefault position={[0, 3, 15]} />
         <Suspense fallback={null}>
           <Stars />
           <Desert />
@@ -18,10 +18,10 @@ export default function Scene() {
           <OrbitControls 
             enableZoom={false}
             enablePan={false}
-            rotateSpeed={0.5}
+            rotateSpeed={0.4}
             autoRotate
-            autoRotateSpeed={0.2}
-            maxPolarAngle={Math.PI / 2}
+            autoRotateSpeed={0.1}
+            maxPolarAngle={Math.PI / 2.1}
             minPolarAngle={Math.PI / 3}
           />
         </Suspense>
