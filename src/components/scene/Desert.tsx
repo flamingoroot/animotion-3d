@@ -11,7 +11,6 @@ export default function Desert() {
   // Load the desert image texture
   const desertTexture = useLoader(TextureLoader, "/lovable-uploads/c52d47d1-acc5-46cf-b11d-ed8115bd05d0.png");
   
-  // Create a sunset-colored desert floor
   useFrame((state, delta) => {
     if (sunRef.current) {
       sunRef.current.rotation.y += delta * 0.05;
@@ -20,38 +19,37 @@ export default function Desert() {
 
   return (
     <group>
-      {/* Use the desert image as a skybox, adjusted to be more prominent */}
-      <mesh position={[0, 5, -40]} rotation={[0, 0, 0]}>
-        <planeGeometry args={[200, 100]} />
+      {/* Desert background image */}
+      <mesh position={[0, 10, -60]} rotation={[0, 0, 0]}>
+        <planeGeometry args={[240, 120]} />
         <meshBasicMaterial 
           map={desertTexture}
           side={THREE.DoubleSide}
         />
       </mesh>
 
-      {/* Sun - larger and positioned to match the reference */}
-      <mesh ref={sunRef} position={[0, 25, -50]}>
-        <sphereGeometry args={[12, 32, 32]} />
-        <meshBasicMaterial color="#ff7b00" />
+      {/* Sun - more orange and larger */}
+      <mesh ref={sunRef} position={[0, 25, -70]}>
+        <sphereGeometry args={[15, 32, 32]} />
+        <meshBasicMaterial color="#ff6a00" />
       </mesh>
 
-      {/* Ambient Light - warmer to match sunset */}
-      <ambientLight intensity={0.8} color="#ffdbba" />
+      {/* Stronger sunset lighting */}
+      <ambientLight intensity={1.0} color="#ffdbba" />
       
-      {/* Directional Light (Sunset) - positioned to match sun position */}
       <directionalLight 
         position={[0, 25, -50]}
-        intensity={1.8}
-        color="#ff7b00"
+        intensity={2.0}
+        color="#ff6a00"
       />
 
-      {/* Desert Ground - flatter and more orange to match reference */}
+      {/* Desert Ground - flatter with more defined dunes */}
       <mesh 
         ref={groundRef}
         rotation={[-Math.PI / 2, 0, 0]} 
         position={[0, -2, 0]}
       >
-        <planeGeometry args={[200, 200, 50, 50]} />
+        <planeGeometry args={[300, 300, 60, 60]} />
         <meshStandardMaterial 
           color="#e9a268" 
           wireframe={false}
@@ -66,7 +64,7 @@ export default function Desert() {
               '#include <begin_vertex>',
               `
               #include <begin_vertex>
-              float elevation = sin(position.x * 0.02) * sin(position.z * 0.02) * 1.0;
+              float elevation = sin(position.x * 0.015) * sin(position.z * 0.015) * 0.8;
               transformed.y += elevation;
               `
             );
@@ -74,27 +72,27 @@ export default function Desert() {
         />
       </mesh>
 
-      {/* Add some rock formations and dunes in the distance */}
-      <group position={[-30, -1, -20]}>
+      {/* Larger dunes in background to match reference */}
+      <group position={[-50, -1.5, -30]}>
         <mesh>
-          <coneGeometry args={[8, 10, 4]} />
+          <coneGeometry args={[20, 12, 4]} />
           <meshStandardMaterial color="#d28c51" />
         </mesh>
       </group>
 
-      <group position={[25, -1, -15]}>
+      <group position={[40, -1.5, -25]}>
         <mesh>
-          <coneGeometry args={[10, 8, 4]} />
+          <coneGeometry args={[25, 15, 4]} />
           <meshStandardMaterial color="#c17f45" />
         </mesh>
       </group>
 
-      {/* Add distant mountains/dunes to match reference image */}
-      {[-50, -25, 0, 25, 50].map((x, i) => (
-        <group key={i} position={[x, -1, -30 - (i * 3)]}>
+      {/* Distant mountain range like in reference */}
+      {[-80, -40, 0, 40, 80].map((x, i) => (
+        <group key={i} position={[x, -1.5, -40 - (i * 2)]}>
           <mesh>
-            <coneGeometry args={[15 + (i % 3 * 5), 10 + (i % 2 * 8), 3]} />
-            <meshStandardMaterial color={`hsl(30, 70%, ${40 - i * 3}%)`} />
+            <coneGeometry args={[20 + (i % 3 * 6), 12 + (i % 2 * 8), 4]} />
+            <meshStandardMaterial color={`hsl(30, 80%, ${45 - i * 4}%)`} />
           </mesh>
         </group>
       ))}
