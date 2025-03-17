@@ -28,6 +28,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+// Add these lines to fix Google sign-in
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
 type AuthContextType = {
   currentUser: User | null;
   loading: boolean;
@@ -68,7 +73,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Successfully signed in!');
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Sign-in error:', error.message);
       toast.error('Failed to sign in. Please check your credentials.');
       throw error;
     }
@@ -78,7 +84,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       toast.success('Account created successfully!');
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Sign-up error:', error.message);
       toast.error('Failed to create account. This email might be already in use.');
       throw error;
     }
@@ -86,10 +93,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      console.log('Attempting Google sign in...');
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Google sign in successful:', result.user.email);
       toast.success('Successfully signed in with Google!');
-    } catch (error) {
-      toast.error('Failed to sign in with Google.');
+    } catch (error: any) {
+      console.error('Google sign-in error:', error.code, error.message);
+      toast.error(`Failed to sign in with Google: ${error.message}`);
       throw error;
     }
   };

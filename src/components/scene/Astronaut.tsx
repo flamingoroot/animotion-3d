@@ -1,66 +1,34 @@
 
 import { useRef, useEffect } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import * as THREE from "three";
+import { TextureLoader } from "three";
 
-export default function Astronaut({ position = [5, -1, 3] }) {
+export default function Astronaut() {
   const group = useRef<THREE.Group>(null);
+  const astronautTexture = useLoader(TextureLoader, "/lovable-uploads/5d9020bf-ca3d-4512-8468-34b0d5a3aca2.png");
   
-  // Create a simplified astronaut with basic geometries
+  // Create a custom astronaut using the provided image
   useFrame((state) => {
     if (group.current) {
       // Make the astronaut float slightly
-      group.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+      group.current.position.y = -1 + Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
       // Slowly rotate the astronaut
       group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.3;
     }
   });
 
   return (
-    <group ref={group} position={position} scale={1.5}>
-      {/* Body */}
-      <mesh position={[0, 0, 0]}>
-        <capsuleGeometry args={[0.5, 1, 8, 16]} />
-        <meshStandardMaterial color="#f5f5f5" metalness={0.2} roughness={0.4} />
-      </mesh>
-      
-      {/* Helmet */}
-      <mesh position={[0, 0.9, 0]}>
-        <sphereGeometry args={[0.4, 16, 16]} />
-        <meshStandardMaterial 
-          color="#8cb4ff" 
-          metalness={0.8} 
-          roughness={0.2} 
-          transparent={true} 
-          opacity={0.9} 
+    <group ref={group} position={[5, -1, 3]} scale={1.5}>
+      {/* Use a simple plane with the astronaut texture */}
+      <mesh>
+        <planeGeometry args={[2, 2.5]} />
+        <meshBasicMaterial 
+          map={astronautTexture} 
+          transparent={true}
+          side={THREE.DoubleSide}
         />
-      </mesh>
-      
-      {/* Backpack */}
-      <mesh position={[0, -0.1, -0.5]}>
-        <boxGeometry args={[0.8, 0.8, 0.3]} />
-        <meshStandardMaterial color="#d4d4d4" metalness={0.3} roughness={0.5} />
-      </mesh>
-      
-      {/* Arms */}
-      <mesh position={[0.7, 0, 0]} rotation={[0, 0, -Math.PI / 8]}>
-        <capsuleGeometry args={[0.2, 0.8, 8, 16]} />
-        <meshStandardMaterial color="#f5f5f5" metalness={0.2} roughness={0.4} />
-      </mesh>
-      <mesh position={[-0.7, 0, 0]} rotation={[0, 0, Math.PI / 8]}>
-        <capsuleGeometry args={[0.2, 0.8, 8, 16]} />
-        <meshStandardMaterial color="#f5f5f5" metalness={0.2} roughness={0.4} />
-      </mesh>
-      
-      {/* Legs */}
-      <mesh position={[0.3, -1, 0]}>
-        <capsuleGeometry args={[0.2, 0.8, 8, 16]} />
-        <meshStandardMaterial color="#f5f5f5" metalness={0.2} roughness={0.4} />
-      </mesh>
-      <mesh position={[-0.3, -1, 0]}>
-        <capsuleGeometry args={[0.2, 0.8, 8, 16]} />
-        <meshStandardMaterial color="#f5f5f5" metalness={0.2} roughness={0.4} />
       </mesh>
     </group>
   );
