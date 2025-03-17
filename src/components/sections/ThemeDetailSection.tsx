@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -14,23 +13,11 @@ export default function ThemeDetailSection({ themeId, onBackClick }: ThemeDetail
   const { currentUser } = useAuth();
   const [ordered, setOrdered] = useState(false);
 
-  // Sample demo images for each theme
-  const demoImages = {
-    ecommerce: [
-      'https://cdn.dribbble.com/users/1126935/screenshots/16741458/media/82626ccba19b9fc153b6525b32e45c7e.png',
-      'https://cdn.dribbble.com/users/1126935/screenshots/17158369/media/1549124f6df873c7b52f43a8ab55c080.png',
-      'https://cdn.dribbble.com/users/1126935/screenshots/16895543/media/8f19aeb2ece4ca396dbf59f47c0bb58e.png',
-    ],
-    course: [
-      'https://cdn.dribbble.com/users/1126935/screenshots/15307553/media/3e59c9bf4ed1fb4c686fce58c2cc1ecb.png',
-      'https://cdn.dribbble.com/users/1126935/screenshots/14641194/media/b20be3cf847fcb2c2a681b8e47cd04fd.png',
-      'https://cdn.dribbble.com/users/1126935/screenshots/14743064/media/6c9b9a21b77815cafe3813eab0d5af19.png',
-    ],
-    portfolio: [
-      'https://cdn.dribbble.com/users/1126935/screenshots/16264906/media/d1ffae357ceb72e24bb9a00a803ca61a.png',
-      'https://cdn.dribbble.com/users/1126935/screenshots/16152014/media/7eafdbb1132423ffbe55558fd6734b49.png',
-      'https://cdn.dribbble.com/users/1126935/screenshots/15750171/media/9c5264a0301af3c1f9d38f51fa5f47f3.png',
-    ],
+  // Sample demo URLs for each theme
+  const demoUrls = {
+    ecommerce: 'https://e-commerce-demo.vercel.app',
+    course: 'https://course-platform-demo.vercel.app',
+    portfolio: 'https://portfolio-theme-demo.vercel.app',
   };
 
   const themes = {
@@ -79,7 +66,7 @@ export default function ThemeDetailSection({ themeId, onBackClick }: ThemeDetail
   };
 
   const theme = themes[themeId as keyof typeof themes];
-  const currentThemeDemos = demoImages[themeId as keyof typeof demoImages] || [];
+  const demoUrl = demoUrls[themeId as keyof typeof demoUrls] || '';
 
   const handleOrder = () => {
     if (!currentUser) {
@@ -116,8 +103,8 @@ export default function ThemeDetailSection({ themeId, onBackClick }: ThemeDetail
           <h2 className="text-2xl font-bold text-white font-space">{theme.title}</h2>
         </div>
         
-        {/* Theme Demo */}
-        <ThemeDemo themeId={themeId} images={currentThemeDemos} />
+        {/* Theme Demo Button */}
+        <ThemeDemo themeId={themeId} demoUrl={demoUrl} />
         
         <p className="text-gray-200 mb-6">{theme.description}</p>
         
