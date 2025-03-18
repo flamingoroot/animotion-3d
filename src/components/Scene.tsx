@@ -10,7 +10,7 @@ export default function Scene() {
       <Canvas>
         <PerspectiveCamera makeDefault position={[0, 50, 120]} />
         <Suspense fallback={null}>
-          {/* Use Drei's Stars component for the background */}
+          {/* Background stars */}
           <DreiStars radius={300} depth={100} count={8000} factor={4} saturation={0.6} fade speed={0.5} />
           
           {/* Add our solar system */}

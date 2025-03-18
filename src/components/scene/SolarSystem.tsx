@@ -10,7 +10,7 @@ interface PlanetProps {
   rotationSpeed: number;
   orbitSpeed: number;
   orbitRadius: number;
-  texturePath: string;
+  textureUrl: string;
   hasRings?: boolean;
   ringColor?: string;
 }
@@ -21,13 +21,13 @@ const Planet = ({
   rotationSpeed, 
   orbitSpeed, 
   orbitRadius, 
-  texturePath,
+  textureUrl,
   hasRings = false,
   ringColor = "#FFFFFF" 
 }: PlanetProps) => {
   const planetRef = useRef<THREE.Mesh>(null);
   const orbitRef = useRef<THREE.Group>(null);
-  const planetTexture = useTexture(texturePath);
+  const texture = useTexture(textureUrl);
   
   useFrame((state, delta) => {
     if (planetRef.current) {
@@ -47,7 +47,7 @@ const Planet = ({
       >
         <sphereGeometry args={[radius, 64, 64]} />
         <meshStandardMaterial 
-          map={planetTexture}
+          map={texture}
           metalness={0.4}
           roughness={0.7}
         />
@@ -85,7 +85,7 @@ export default function SolarSystem() {
       orbitRadius: 14, 
       rotationSpeed: 0.05, 
       orbitSpeed: 0.008,
-      texturePath: "/textures/mercury.jpg"
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_mercury.jpg"
     },
     { 
       name: "Venus", 
@@ -93,7 +93,7 @@ export default function SolarSystem() {
       orbitRadius: 20, 
       rotationSpeed: 0.03, 
       orbitSpeed: 0.006,
-      texturePath: "/textures/venus.jpg"
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_venus_atmosphere.jpg"
     },
     { 
       name: "Earth", 
@@ -101,7 +101,7 @@ export default function SolarSystem() {
       orbitRadius: 28, 
       rotationSpeed: 0.1, 
       orbitSpeed: 0.005,
-      texturePath: "/textures/earth.jpg"
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_earth_daymap.jpg"
     },
     { 
       name: "Mars", 
@@ -109,7 +109,7 @@ export default function SolarSystem() {
       orbitRadius: 35, 
       rotationSpeed: 0.08, 
       orbitSpeed: 0.004,
-      texturePath: "/textures/mars.jpg"
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_mars.jpg"
     },
     { 
       name: "Jupiter", 
@@ -117,7 +117,7 @@ export default function SolarSystem() {
       orbitRadius: 48, 
       rotationSpeed: 0.2, 
       orbitSpeed: 0.002,
-      texturePath: "/textures/jupiter.jpg"
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_jupiter.jpg"
     },
     { 
       name: "Saturn", 
@@ -125,7 +125,7 @@ export default function SolarSystem() {
       orbitRadius: 62, 
       rotationSpeed: 0.18, 
       orbitSpeed: 0.0015,
-      texturePath: "/textures/saturn.jpg",
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_saturn.jpg",
       hasRings: true,
       ringColor: "#D2B48C"
     },
@@ -135,7 +135,7 @@ export default function SolarSystem() {
       orbitRadius: 74, 
       rotationSpeed: 0.15, 
       orbitSpeed: 0.001,
-      texturePath: "/textures/uranus.jpg",
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_uranus.jpg",
       hasRings: true,
       ringColor: "#87CEEB"
     },
@@ -145,7 +145,7 @@ export default function SolarSystem() {
       orbitRadius: 85, 
       rotationSpeed: 0.14, 
       orbitSpeed: 0.0008,
-      texturePath: "/textures/neptune.jpg"
+      textureUrl: "https://raw.githubusercontent.com/but-cat/myPrograms/main/public/img/2k_neptune.jpg"
     }
   ];
 
@@ -171,7 +171,7 @@ export default function SolarSystem() {
           rotationSpeed={planet.rotationSpeed}
           orbitSpeed={planet.orbitSpeed}
           orbitRadius={planet.orbitRadius}
-          texturePath={planet.texturePath}
+          textureUrl={planet.textureUrl}
           hasRings={planet.hasRings}
           ringColor={planet.ringColor}
         />
