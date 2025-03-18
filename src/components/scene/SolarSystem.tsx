@@ -1,7 +1,7 @@
+
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { useTexture } from "@react-three/drei";
 
 interface PlanetProps {
   radius: number;
@@ -9,7 +9,7 @@ interface PlanetProps {
   rotationSpeed: number;
   orbitSpeed: number;
   orbitRadius: number;
-  textureUrl: string;
+  color: string;
   hasRings?: boolean;
   ringColor?: string;
 }
@@ -19,14 +19,13 @@ const Planet = ({
   position, 
   rotationSpeed, 
   orbitSpeed, 
-  orbitRadius, 
-  textureUrl,
+  orbitRadius,
+  color,
   hasRings = false,
   ringColor = "#FFFFFF" 
 }: PlanetProps) => {
   const planetRef = useRef<THREE.Mesh>(null);
   const orbitRef = useRef<THREE.Group>(null);
-  const texture = useTexture(textureUrl);
   
   useFrame((state, delta) => {
     if (planetRef.current) {
@@ -46,7 +45,7 @@ const Planet = ({
       >
         <sphereGeometry args={[radius, 64, 64]} />
         <meshStandardMaterial 
-          map={texture}
+          color={color}
           metalness={0.4}
           roughness={0.7}
         />
@@ -83,7 +82,7 @@ export default function SolarSystem() {
       orbitRadius: 14, 
       rotationSpeed: 0.05, 
       orbitSpeed: 0.008,
-      textureUrl: "/planet-textures/mercury.jpg"
+      color: "#A0522D"
     },
     { 
       name: "Venus", 
@@ -91,7 +90,7 @@ export default function SolarSystem() {
       orbitRadius: 20, 
       rotationSpeed: 0.03, 
       orbitSpeed: 0.006,
-      textureUrl: "/planet-textures/venus.jpg"
+      color: "#DEB887"
     },
     { 
       name: "Earth", 
@@ -99,7 +98,7 @@ export default function SolarSystem() {
       orbitRadius: 28, 
       rotationSpeed: 0.1, 
       orbitSpeed: 0.005,
-      textureUrl: "/planet-textures/earth.jpg"
+      color: "#4169E1"
     },
     { 
       name: "Mars", 
@@ -107,7 +106,7 @@ export default function SolarSystem() {
       orbitRadius: 35, 
       rotationSpeed: 0.08, 
       orbitSpeed: 0.004,
-      textureUrl: "/planet-textures/mars.jpg"
+      color: "#CD853F"
     },
     { 
       name: "Jupiter", 
@@ -115,7 +114,7 @@ export default function SolarSystem() {
       orbitRadius: 48, 
       rotationSpeed: 0.2, 
       orbitSpeed: 0.002,
-      textureUrl: "/planet-textures/jupiter.jpg"
+      color: "#DEB887"
     },
     { 
       name: "Saturn", 
@@ -123,7 +122,7 @@ export default function SolarSystem() {
       orbitRadius: 62, 
       rotationSpeed: 0.18, 
       orbitSpeed: 0.0015,
-      textureUrl: "/planet-textures/saturn.jpg",
+      color: "#F4A460",
       hasRings: true,
       ringColor: "#D2B48C"
     },
@@ -133,7 +132,7 @@ export default function SolarSystem() {
       orbitRadius: 74, 
       rotationSpeed: 0.15, 
       orbitSpeed: 0.001,
-      textureUrl: "/planet-textures/uranus.jpg",
+      color: "#87CEEB",
       hasRings: true,
       ringColor: "#87CEEB"
     },
@@ -143,7 +142,7 @@ export default function SolarSystem() {
       orbitRadius: 85, 
       rotationSpeed: 0.14, 
       orbitSpeed: 0.0008,
-      textureUrl: "/planet-textures/neptune.jpg"
+      color: "#4169E1"
     }
   ];
 
@@ -166,7 +165,7 @@ export default function SolarSystem() {
           rotationSpeed={planet.rotationSpeed}
           orbitSpeed={planet.orbitSpeed}
           orbitRadius={planet.orbitRadius}
-          textureUrl={planet.textureUrl}
+          color={planet.color}
           hasRings={planet.hasRings}
           ringColor={planet.ringColor}
         />
