@@ -1,8 +1,9 @@
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Stars as DreiStars } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Suspense } from "react";
 import SolarSystem from "./scene/SolarSystem";
+import Stars from "./scene/Stars";
 
 export default function Scene() {
   return (
@@ -10,8 +11,8 @@ export default function Scene() {
       <Canvas>
         <PerspectiveCamera makeDefault position={[0, 50, 120]} />
         <Suspense fallback={null}>
-          {/* Background stars */}
-          <DreiStars radius={300} depth={100} count={8000} factor={4} saturation={0.6} fade speed={0.5} />
+          {/* Custom 3D stars background */}
+          <Stars count={8000} />
           
           {/* Add our solar system */}
           <SolarSystem />
