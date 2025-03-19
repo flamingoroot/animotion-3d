@@ -2,6 +2,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Suspense, useState, useEffect } from "react";
+import * as THREE from "three";
 import SolarSystem from "./scene/SolarSystem";
 import Stars from "./scene/Stars";
 import { useToast } from "@/hooks/use-toast";
